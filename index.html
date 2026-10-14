@@ -22,6 +22,7 @@ h2{font-size:clamp(28px,4.5vw,52px);line-height:1.02;margin:12px 0 14px;letter-s
 .table-wrap{overflow:auto;border:1px solid var(--line);border-radius:16px}.table{border-collapse:collapse;width:100%;min-width:650px;background:#0b192c}.table th,.table td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);font-size:13px}.table th{color:var(--gold);font-size:11px;letter-spacing:.08em;text-transform:uppercase}.table td{color:#e4ebf5}.muted{color:var(--muted)!important}
 footer{border-top:1px solid var(--line);padding:22px clamp(16px,4vw,48px);font-size:11px;color:#93a4bd;line-height:1.6}
 .empty{padding:30px;text-align:center;color:var(--muted);border:1px dashed #38516f;border-radius:16px}
+.modal-backdrop{position:fixed;inset:0;background:#020812d9;z-index:1000;display:flex;align-items:center;justify-content:center;padding:18px;overflow:auto}.modal-box{width:min(900px,100%);max-height:92vh;overflow:auto;background:linear-gradient(135deg,#122744,#071426);border:1px solid #49617d;border-radius:22px;padding:24px;position:relative;box-shadow:0 25px 80px #000a}.modal-close{position:sticky;float:right;top:0;border:1px solid #49617d;background:#0b192c;color:white;border-radius:10px;padding:9px 12px;cursor:pointer}.modal-title{font-size:clamp(24px,4vw,36px);margin:14px 0 4px}.modal-subtitle{color:var(--muted);line-height:1.5}.detail-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:18px 0}.detail-cell{background:#0b192c;border:1px solid var(--line);border-radius:12px;padding:12px;min-width:0}.detail-cell span{display:block;color:var(--muted);font-size:11px;margin-bottom:7px}.detail-cell strong{display:block;overflow-wrap:anywhere;font-size:15px}.detail-notes p{color:#dce6f4;line-height:1.55;border-left:3px solid var(--gold);padding-left:12px}.modal-disclaimer,.compare-caveat{font-size:12px;color:var(--muted);line-height:1.6}.compare-head{display:grid;grid-template-columns:1fr 60px 1fr;gap:12px;align-items:center;background:#0b192c;border:1px solid var(--line);padding:18px;border-radius:16px;margin-bottom:14px}.compare-head h3{overflow-wrap:anywhere}.versus{text-align:center;color:var(--gold);font-weight:1000;font-size:24px}.compare-table{border:1px solid var(--line);border-radius:14px;overflow:hidden}.compare-row{display:grid;grid-template-columns:1fr 1.2fr 1fr;align-items:stretch;border-bottom:1px solid var(--line)}.compare-row:last-child{border-bottom:0}.compare-val,.compare-label{padding:12px 8px;text-align:center;overflow-wrap:anywhere}.compare-val{font-size:16px;font-weight:900}.compare-label{color:var(--muted);background:#0b192c;font-size:12px;display:flex;align-items:center;justify-content:center}.winner{color:var(--green);background:#b6ff3612}.compare-caveat{margin:14px 0}@media(max-width:600px){.detail-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.compare-head{grid-template-columns:1fr 36px 1fr;padding:10px}.compare-row{grid-template-columns:.8fr 1.1fr .8fr}.compare-val{font-size:13px;padding:10px 4px}.compare-label{font-size:10px;padding:8px 3px}}
 @media(max-width:850px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.grid{grid-template-columns:1fr}.big-num{font-size:36px}.hero-stat{display:grid;grid-template-columns:1fr 1fr}.hero-stat .stat-label{grid-column:1/-1}}
 </style>
@@ -48,6 +49,7 @@ footer{border-top:1px solid var(--line);padding:22px clamp(16px,4vw,48px);font-s
     <button class="tab active" data-tab="players">Players</button>
     <button class="tab" data-tab="teams">Teams</button>
     <button class="tab" data-tab="rankings">Rankings</button>
+    <button class="tab" data-tab="compare">Compare</button>
     <button class="tab" data-tab="share">Create Instagram Card</button>
   </div>
   <section id="playersPane">
@@ -63,6 +65,11 @@ footer{border-top:1px solid var(--line);padding:22px clamp(16px,4vw,48px);font-s
     <div class="section-head"><h2>What the Data Says</h2><p>Different evidence sets answer different questions.</p></div>
     <div class="toolbar"><select id="rankType"><option value="last">Prior-season EGL index</option><option value="composite">Provisional composite score</option></select><input id="rankSearch" placeholder="Filter ranking by player or team…"></div>
     <div class="table-wrap"><table class="table"><thead><tr><th>Rank</th><th>Player</th><th>Team</th><th>Index / Score</th><th>Evidence</th><th></th></tr></thead><tbody id="rankBody"></tbody></table></div>
+  </section>
+  <section id="comparePane" hidden>
+    <div class="section-head"><h2>Head-to-Head</h2><p>Compare two players or teams. Find the stat that starts the debate.</p></div>
+    <div class="toolbar"><select id="compareMode"><option value="player">Player vs Player</option><option value="team">Team vs Team</option></select><select id="compareA" aria-label="First player or team"></select><select id="compareB" aria-label="Second player or team"></select></div>
+    <div id="compareResult"></div>
   </section>
   <section id="sharePane" hidden>
     <div class="section-head"><h2>Create a 4:5 Instagram Card</h2><p>Generate a downloadable 1080 × 1350 PNG from the current dataset.</p></div>
