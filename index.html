@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EGL Cricket Intelligence</title>
+<style>
+:root{--navy:#071426;--navy2:#102746;--red:#e33b42;--gold:#f4c45e;--green:#b6ff36;--ink:#f4f7fb;--muted:#aebbd0;--line:#263a55;--panel:#0d1d33}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0%,#1a3152 0,#071426 44%);color:var(--ink);font-family:Inter,Arial,sans-serif}
+header{padding:22px clamp(16px,4vw,48px);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}.mark{width:58px;height:58px;object-fit:contain;border-radius:10px;background:#f8f0df;padding:3px}.sponsor{display:flex;align-items:center;gap:12px;padding:8px 12px;border:1px solid #38516f;border-radius:14px;background:#0b192c}.sponsor img{width:145px;max-width:32vw;height:auto;display:block;border-radius:4px}.sponsor-label{font-size:10px;letter-spacing:.15em;font-weight:900;color:var(--gold);white-space:nowrap}.header-right{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.eyebrow{font-size:11px;letter-spacing:.18em;color:var(--gold);font-weight:800}.brand h1{font-size:18px;margin:3px 0 0;letter-spacing:.02em}
+.pill{border:1px solid #47617f;color:#dce8f7;border-radius:99px;padding:8px 12px;font-size:12px}
+main{max-width:1240px;margin:auto;padding:26px clamp(16px,4vw,48px) 60px}
+.hero{display:grid;grid-template-columns:1.35fr .65fr;gap:22px;align-items:stretch}.hero-copy,.hero-stat,.panel,.tile{background:linear-gradient(135deg,#122744eF,#0b192ceF);border:1px solid var(--line);border-radius:22px}
+.hero-copy{padding:clamp(22px,4vw,42px);position:relative;overflow:hidden}.hero-copy:after{content:"EGL";position:absolute;right:-8px;bottom:-46px;font-size:150px;font-weight:1000;color:#ffffff08;pointer-events:none}
+h2{font-size:clamp(28px,4.5vw,52px);line-height:1.02;margin:12px 0 14px;letter-spacing:-.04em}.hero-copy p{color:var(--muted);max-width:620px;line-height:1.6}.highlight{color:var(--green)}.hero-stat{padding:24px;display:flex;flex-direction:column;justify-content:center;gap:14px}.big-num{font-size:42px;font-weight:900;letter-spacing:-.05em}.stat-label{color:var(--muted);font-size:13px}
+.disclaimer{margin:18px 0 26px;border:1px solid #765e2a;background:#2a2417;color:#f6e5b5;padding:14px 16px;border-radius:14px;font-size:12px;line-height:1.55}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:24px 0 16px}.tab{border:1px solid var(--line);background:#0b192c;color:#dbe5f3;padding:10px 15px;border-radius:99px;cursor:pointer;font-weight:700}.tab.active{background:var(--green);color:#071426;border-color:var(--green)}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0 18px}.toolbar input,.toolbar select{background:#08172a;color:var(--ink);border:1px solid #38516f;border-radius:12px;padding:12px 14px;min-width:190px;flex:1}.toolbar button,.action{border:0;background:var(--red);color:white;font-weight:800;padding:12px 16px;border-radius:12px;cursor:pointer}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.tile{padding:18px;min-width:0}.tile h3{margin:0 0 6px;font-size:18px}.meta{font-size:12px;color:var(--muted)}.metric-row{display:flex;justify-content:space-between;gap:10px;align-items:end;margin:16px 0}.score{font-size:30px;font-weight:900;color:var(--green)}.score-label{font-size:11px;color:var(--muted)}.mini-line{height:5px;background:#263a55;border-radius:9px;overflow:hidden;margin-top:7px}.mini-line span{display:block;height:100%;background:linear-gradient(90deg,var(--red),var(--gold),var(--green))}
+.tile .small{font-size:12px;line-height:1.5;color:#c2cee0;margin-top:10px}.tile .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.tile .actions button{font-size:11px;padding:8px 10px;border-radius:9px;border:1px solid #3b5474;background:#0a1728;color:#f4f7fb;cursor:pointer}.tile .actions button.primary{background:var(--green);color:#061426;border-color:var(--green);font-weight:800}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:16px;flex-wrap:wrap;margin:22px 0 12px}.section-head h2{font-size:25px;margin:0}.section-head p{margin:0;color:var(--muted);font-size:13px}
+.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:16px}.table{border-collapse:collapse;width:100%;min-width:650px;background:#0b192c}.table th,.table td{padding:12px 14px;text-align:left;border-bottom:1px solid var(--line);font-size:13px}.table th{color:var(--gold);font-size:11px;letter-spacing:.08em;text-transform:uppercase}.table td{color:#e4ebf5}.muted{color:var(--muted)!important}
+footer{border-top:1px solid var(--line);padding:22px clamp(16px,4vw,48px);font-size:11px;color:#93a4bd;line-height:1.6}
+.empty{padding:30px;text-align:center;color:var(--muted);border:1px dashed #38516f;border-radius:16px}
+@media(max-width:850px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.grid{grid-template-columns:1fr}.big-num{font-size:36px}.hero-stat{display:grid;grid-template-columns:1fr 1fr}.hero-stat .stat-label{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><img class="mark" src="assets/egl-logo.jpeg" alt="EGL — Emami City Ground League logo"><div><div class="eyebrow">EGL 2.0 • CRICKET INTELLIGENCE</div><h1>THE NUMBERS HAVE A VIEW.</h1></div></div>
+  <div class="header-right"><div class="sponsor"><span class="sponsor-label">EXCLUSIVE PARTNER</span><img src="assets/mc-financial-services-logo.jpeg" alt="MC Financial Services — Complete Financial Solution"></div><div class="pill">31 OCT — 1 NOV 2026 · RAJARHAT</div></div>
+</header>
+<main>
+  <section class="hero">
+    <div class="hero-copy">
+      <div class="eyebrow">DATA-LED • COMMUNITY-DRIVEN</div>
+      <h2>What the numbers say.<br><span class="highlight">Match day decides.</span></h2>
+      <p>Explore player snapshots, team composition and previous-season signals ahead of EGL 2.0. Use the numbers to start a conversation—not to settle an argument.</p>
+    </div>
+    <div class="hero-stat">
+      <div><div class="big-num" id="playerCount">—</div><div class="stat-label">players in the current dataset</div></div>
+      <div><div class="big-num" id="teamCount">—</div><div class="stat-label">teams · 12 players per squad</div></div>
+    </div>
+  </section>
+  <div class="disclaimer"><strong>FOR FUN & DISCUSSION ONLY.</strong> Insights are compiled from multiple sources, including prior EGL data and CricHeroes career profiles. Data coverage and formats vary. These are not official rankings, verified scouting assessments, or predictions of actual match-day strength. <strong>Match day has the final say.</strong></div>
+  <div class="tabs">
+    <button class="tab active" data-tab="players">Players</button>
+    <button class="tab" data-tab="teams">Teams</button>
+    <button class="tab" data-tab="rankings">Rankings</button>
+    <button class="tab" data-tab="share">Create Instagram Card</button>
+  </div>
+  <section id="playersPane">
+    <div class="section-head"><h2>Player Intelligence</h2><p>Search a player or filter by team.</p></div>
+    <div class="toolbar"><input id="playerSearch" placeholder="Search player name or role…"><select id="teamFilter"><option value="">All teams</option></select><select id="roleFilter"><option value="">All roles</option><option>Batting</option><option>Bowling</option><option>All-rounder</option><option>Wicketkeeper</option></select></div>
+    <div class="grid" id="playerGrid"></div>
+  </section>
+  <section id="teamsPane" hidden>
+    <div class="section-head"><h2>Team Snapshots</h2><p>Composition and available data, not a team-strength verdict.</p></div>
+    <div class="grid" id="teamGrid"></div>
+  </section>
+  <section id="rankingsPane" hidden>
+    <div class="section-head"><h2>What the Data Says</h2><p>Different evidence sets answer different questions.</p></div>
+    <div class="toolbar"><select id="rankType"><option value="last">Prior-season EGL index</option><option value="composite">Provisional composite score</option></select><input id="rankSearch" placeholder="Filter ranking by player or team…"></div>
+    <div class="table-wrap"><table class="table"><thead><tr><th>Rank</th><th>Player</th><th>Team</th><th>Index / Score</th><th>Evidence</th><th></th></tr></thead><tbody id="rankBody"></tbody></table></div>
+  </section>
+  <section id="sharePane" hidden>
+    <div class="section-head"><h2>Create a 4:5 Instagram Card</h2><p>Generate a downloadable 1080 × 1350 PNG from the current dataset.</p></div>
+    <div class="toolbar"><select id="cardType"><option value="player">Player spotlight</option><option value="team">Team snapshot</option><option value="stat">Single stat card</option></select><select id="cardSubject"></select><select id="cardStat"><option value="Provisional_Score">Provisional Intelligence Score</option><option value="Last_Season_Index">Prior-season EGL index</option><option value="Last_Season_Runs">Prior-season runs</option><option value="Last_Season_Wickets">Prior-season wickets</option><option value="Last_Season_Batting_SR">Prior-season batting SR</option><option value="Auction_Price_INR">Auction price</option></select><input id="cardHeadline" value="WHAT THE NUMBERS SAY" aria-label="Card headline"><button id="renderCard">Preview card</button><button id="downloadCard" class="action">Download PNG</button></div>
+    <div style="max-width:540px;margin:16px auto"><canvas id="cardCanvas" width="1080" height="1350" style="width:100%;height:auto;border-radius:14px;background:#071426;box-shadow:0 18px 60px #0008"></canvas></div>
+    <p class="muted" style="font-size:12px;line-height:1.6">Every generated card includes the source/coverage disclaimer. Check the displayed value and evidence before sharing. The card is a social graphic, not an official player rating.</p>
+  </section>
+</main>
+<footer>
+  <strong>EGL CRICKET INTELLIGENCE</strong> · A community analytics and conversation project. <strong>Exclusive Partner: MC Financial Services.</strong><br>
+  Sources: prior-season EGL dataset and mapped CricHeroes career profile statistics. Individual data coverage varies; career figures may include competitions and formats outside EGL. Not official rankings, scouting reports or predictions.
+</footer>
+<script src="app.js"></script>
+</body></html>
