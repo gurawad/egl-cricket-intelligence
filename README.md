@@ -1,32 +1,28 @@
-# EGL Cricket Intelligence — Static Web MVP
+# EGL Cricket Intelligence 2.1 — Website package
 
-A static, mobile-responsive prototype based on the validated EGL Cricket Intelligence workbook.
+This package is a first implementation pass based on the supplied website ZIP.
 
 ## Included
-- Player search and team/role filters
-- Team snapshot cards
-- Prior-season and provisional ranking views
-- Downloadable Instagram portrait cards (1080 × 1350, 4:5)
-- Visible disclaimer on the website and every generated card
-- Static JSON data; no backend or API keys
-- Official EGL logo and MC Financial Services logo included in the header and generated Instagram cards
-- Exclusive Partner designation for MC Financial Services
+- `index.html` — GitHub Pages entry point (renamed from the supplied `index-2.html`)
+- `app.js` — existing website logic plus searchable player/team comparison selectors and a Career Centre
+- `data.json` — original validated website dataset plus a `Photo_Path` field for each of the 96 players
+- `assets/` — EGL and MC Financial Services logos plus 96 optimized WebP player photos
 
-## Run locally
-Because the app fetches `data.json`, serve this folder over HTTP rather than opening `index.html` directly:
-```bash
-python3 -m http.server 8000
-```
-Then open `http://localhost:8000`.
+## What changed
+- Added player photos to player tiles and player data modals.
+- Added searchable filters for each side of the head-to-head comparison, so users do not have to scroll through 96 players.
+- Added a Career Centre with sortable career-wide leaderboards for runs, wickets, matches, batting strike rate, bowling economy and wickets per match.
+- Kept career-wide figures separate from prior-season EGL figures.
+- Preserved the existing fun/discussion disclaimer and missing-value handling.
+- Corrected asset folder casing by packaging all live website assets under lowercase `assets/`, matching the existing code references.
 
-## Deploy to GitHub Pages
-1. Unzip the package.
-2. Upload `index.html`, `app.js`, `data.json`, and the complete `assets` folder to the repository root (or the configured Pages folder). Do not upload only the HTML/JS files—the logos are stored in `assets`.
-3. Commit and push.
-4. In GitHub repository settings, enable Pages from the intended branch/folder if not already configured.
+## Deployment
+1. Keep a backup of the current live repository.
+2. Upload the contents of this folder to the same GitHub Pages source directory, replacing `index.html`, `app.js`, and `data.json`, and adding the `assets/PlayerPhotos/` folder.
+3. Commit the changes and wait for GitHub Pages to redeploy.
+4. Test player search, player/team comparison, career leaderboard filters, player photos, team views, and PNG generation on desktop and mobile.
 
-## Public-sharing safeguards
-- This is for fun and discussion, not an official ranking or match prediction.
-- Prior-season EGL stats and CricHeroes career context are not equivalent data sources.
-- Do not publish a value without checking the matching workbook row and evidence coverage.
-- Review any generated card before posting. The site is a prototype; player photos and individual team logos are not included yet; the official EGL and MC Financial Services brand logos are included.
+**Important:** `auction.db` is deliberately not included in this deployment package. Do not publish the database or other source-only files to a public GitHub repository unless you have reviewed their contents and confirmed that they are safe to publish.
+
+## Data audit note
+The supplied `data.json` contains 96 players and 8 teams. All 96 players were mapped to distinct image files using player names and checked photo-name variants. The source photo folder contained 98 files; 96 were matched to the current website players, and two unmatched files were excluded from the deployment package. Photos were resized/optimized for faster page loading, and three HEIC files mislabeled with `.jpg` extensions were converted to WebP. The auction database was not merged into the public website data during this pass; the existing validated website dataset remains the source of truth until any cross-source identity differences are manually reconciled.
